@@ -15,6 +15,5 @@ app.get('/', (req, res) => {
   res.send('Welcome (^.^)');
 })
 
-app.listen(PORT)
-
-
+const port = process.env.PORT || 5000
+app.listen(port, err => err ? console.log("Filed to Listen on Port" , port) : console.log("Listing for Port" , port));
