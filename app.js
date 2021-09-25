@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+require("dotenv").config();
 // const MongoClient = require("mongodb").MongoClient;
 // const ObjectID = require("mongodb").ObjectID;
 // const cors = require("cors");
-// require("dotenv").config();
+
 
 // app.use(cors());
 
@@ -47,12 +49,7 @@ app.use('/orders', orderRouts);
 
 
 
-// app.use((req, res, next) => {
-//   res.status(200).json({
-//     message: 'it works!'
-//   });
-// });
-
+// Error handling
 app.use((req, res, next) => {
  
   const error = new Error('Not found');
@@ -70,12 +67,19 @@ app.use((error, req, res,  next) => {
   });
 });
 
+
+/************************ Mongoose uri credential *************************/
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.7tcxm.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+console.log("uri", uri)
+
+mongoose.connect(uri)
+.then(() => {
+    console.log('database connected');
+})
+.catch(err => {
+    console.log(err)
+})
+
+
+
 module.exports = app;
-
-
-// const port = process.env.PORT || 5000;
-// app.listen(port, (err) =>
-//   err
-//     ? console.log("Filed to Listen on Port", port)
-//     : console.log("Listing for Port", port)
-// );
