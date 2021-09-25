@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send('Welcome (^.^)');
+  res.send('Welcome (^.^) ');
 })
 
 const port = process.env.PORT || 5000
