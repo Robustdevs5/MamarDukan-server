@@ -4,17 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 require("dotenv").config();
-// const MongoClient = require("mongodb").MongoClient;
-// const ObjectID = require("mongodb").ObjectID;
-// const cors = require("cors");
 
-
-// app.use(cors());
-
-
-// app.get("/", (req, res) => {
-//   res.send("Welcome (^.^) ");
-// });
 
 // morgan use for auto consol.log()
 app.use(morgan('dev'));
@@ -25,7 +15,7 @@ app.use(bodyParser.json());
 
 // this is cors origin control of our api
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Here * means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start
+  res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
