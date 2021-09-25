@@ -11,8 +11,13 @@ router.get('/', (req, res, next) => {
 
 // Post an order on database
 router.post('/',(req,res,next) => {
+    const order = {
+        productId: req.body.productId,
+        quantity: req.body.quantity
+    }
     res.status(201).json({
-        message: 'successfully added your order'
+        message: 'successfully added your order',
+        order: order
     });
 });
 

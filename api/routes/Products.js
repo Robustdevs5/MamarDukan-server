@@ -11,8 +11,13 @@ router.get('/', (req, res, next) => {
 
 // Add product on database 
 router.post('/', (req, res, next) => {
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    };
     res.status(200).json({
-        message: "handling post request frm /products routs"
+        message: "handling post request frm /products routs",
+        createdProduct: product
     });
 });
 
@@ -22,12 +27,12 @@ router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     if (id === 'special') {
         res.status(200).json({
-            message: "You discovered the speacial product",
+            message: "You discovered the special product",
             id: id
         });
     } else {
         res.status(200).json({
-            message: 'You cant desearv it'
+            message: 'You cant deserve it'
         });
     }
 });
