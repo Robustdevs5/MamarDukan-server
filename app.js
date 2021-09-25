@@ -15,8 +15,10 @@ const app = express();
 
 // All API Routes
 const ProductsRouts = require('./api/routes/Products');
+const orderRouts = require('./api/routes/orders');
 
 app.use('/products', ProductsRouts);
+app.use('/orders', orderRouts);
 
 
 
