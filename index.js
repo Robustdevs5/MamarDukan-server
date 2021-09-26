@@ -108,7 +108,4 @@ client.connect((err) => {
   });
 });
 
-<<<<<<< HEAD
-=======
 app.listen(port);
->>>>>>> 59e4b8fcce23654608da2bfffe6b0304615d59e2
