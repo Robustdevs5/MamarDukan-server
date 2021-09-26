@@ -8,11 +8,28 @@ const Product = require('../../models/product');
 // Get all products from database
 router.get('/', (req, res, next) => {
    Product.find()
+        .select("name price _id")
         .exec()
         .then(docs => {
-            console.log(docs);
+            
+            const response = {
+                count: docs.length,
+                products: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        price: doc.price,
+                        _id: doc._id,
+                        multiVentorSellar: {
+                            type: 'GET',
+                            url: 'http://localhost:5000/products/' + doc._id
+                        }
+                    };
+                })
+            };
+
+            console.log(response);
             if (docs.length >= 0) {
-                res.status(200).json(docs);
+                res.status(200).json(response);
             } else {
                 res.status(404).json({
                     message: 'No entries found'
@@ -26,6 +43,8 @@ router.get('/', (req, res, next) => {
             })
         });
 });
+
+
 
 
 // Add product on database 
@@ -53,6 +72,9 @@ router.post('/', (req, res, next) => {
 });
 
 
+
+
+
 // Get single products from database
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
@@ -77,6 +99,8 @@ router.get('/:productId', (req, res, next) => {
 
 
 
+
+
 // Updated the products from database
 router.patch('/:productId', (req, res, next) => {
     const id = req.params.productId;
@@ -97,6 +121,9 @@ router.patch('/:productId', (req, res, next) => {
             })
         })
 });
+
+
+
 
 // Delete the products from database
 router.delete('/:productId', (req, res, next) => {
