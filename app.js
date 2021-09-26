@@ -26,7 +26,7 @@ console.log('DATABASE_URL connected', DATABASE_URL)
 
 /******************* this is cors origin control of our api *******************/
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start
+  res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start 
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
