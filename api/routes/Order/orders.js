@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const Order = require('../../models/orders');
-const Product = require('../../models/product');
+const Order = require('../../../models/orders');
+const Product = require('../../../models/product');
 
 // Get all order from database
 router.get('/', (req, res, next) => {
     Order.find()
-        .select('product quantity _id')
+        .select('product quantity _id status')
         .populate('product', 'name price brand color')
         .exec()
         .then(docs => {
@@ -49,7 +49,8 @@ router.post('/',(req, res, next) => {
             const order = new Order({
                 _id: mongoose.Types.ObjectId(),
                 quantity: req.body.quantity,
-                product: req.body.productId
+                product: req.body.productId,
+                status: "PENDING"
             })
             return order.save()     
         })
@@ -59,7 +60,8 @@ router.post('/',(req, res, next) => {
                 createdOrder: {
                     _id: result._id,
                     product: result.product,
-                    quantity: result.quantity
+                    quantity: result.quantity,
+                    status: "PENDING"
                 },
                 multiVendorSeller: {
                     type: "GET",
@@ -105,10 +107,32 @@ router.get('/:orderId', (req,res,next) => {
 
 // updated order from database
 router.patch('/:orderId',(req, res, next) =>{
-    res.status(200).json({
-        message: 'updated order'
-    });
+    const id = req.params.orderId;
+    const updatedOrderStatus = {};
+    for (const status of req.body) {
+        updatedOrderStatus[status.propName] = status.value;
+    }
+    Order.updateOne({_id: id}, {$set: updatedOrderStatus})
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "Updated your order status successfully",
+                multiVendorSeller: {
+                    type: "GET",
+                    url: "http://localhost:3000/products/" + id
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        })
 });
+
+
+
 
 // delete order from database
 router.delete('/:orderId', (req, res, next) => {
