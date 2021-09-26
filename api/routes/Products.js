@@ -22,6 +22,9 @@ router.get('/', (req, res, next) => {
                         multiVentorSellar: {
                             type: 'GET',
                             url: 'http://localhost:5000/products/' + doc._id
+                        },
+                        discount: {
+                            discountPrice: doc.price * 10
                         }
                     };
                 })
@@ -59,7 +62,18 @@ router.post('/', (req, res, next) => {
             console.log(result)
             res.status(200).json({
                 message: "handling post request frm /products routs",
-                createdProduct: result
+                createdProduct: {
+                    name: result.name,
+                    price: result.price,
+                    _id: result.id,
+                    multiVentorSellar: {
+                        type: 'GET',
+                        url: 'http://localhost:5000/products/' + result._id
+                    },
+                    discount: {
+                        discountPrice: result.price * 10
+                    }
+                }
             });
         })
         .catch(err => {

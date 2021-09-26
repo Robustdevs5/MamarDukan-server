@@ -15,7 +15,9 @@ app.use(bodyParser.json());
 
 
 /************************ Mongoose uri credential *************************/
-const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.7tcxm.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+
+
+const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.swdno.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 
 // const DATABASE_URL = process.env.Db_URL;
 console.log('DATABASE_URL connected', DATABASE_URL)
