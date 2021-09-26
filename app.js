@@ -78,7 +78,6 @@ mongoose.connect(DATABASE_URL)
 .catch(err => {
     console.log(err)
 })
-
-
+mongoose.Promise = global.Promise;
 
 module.exports = app;
