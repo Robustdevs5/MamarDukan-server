@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const Product = require('../../models/product');
+const Product = require('../../../models/product');
 
 
 // Get all products from database
 router.get('/', (req, res, next) => {
    Product.find()
-        .select("name price _id color description category brand status")
+        .select("name price _id color description category brand img")
         .exec()
         .then(docs => {
             
@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
                         category: doc.category,
                         color: doc.color,
                         brand: doc.brand,
-                        status: doc.status,
+                        img: doc.status,
                         multiVendorSeller: {
                             type: 'GET',
                             url: 'http://localhost:5000/products/' + doc._id
@@ -65,7 +65,7 @@ router.post('/', (req, res, next) => {
         category:req.body.category,
         color:req.body.color,
         brand:req.body.brand,
-        status: "PENDING"
+        img:req.body.img
     })
     product.save()
         .then(result => {
@@ -80,7 +80,7 @@ router.post('/', (req, res, next) => {
                     color: result.color,
                     brand: result.brand,
                     _id: result.id,
-                    status: "PENDING",
+                    img:req.body.img,
                     multiVendorSeller: {
                         type: 'GET',
                         url: 'http://localhost:5000/products/' + result._id
@@ -108,7 +108,7 @@ router.post('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-    .select('name price _id color description category brand status')
+    .select('name price _id color description category brand')
         .exec()
         .then(doc => {
             console.log('doc console', doc);
