@@ -42,8 +42,8 @@ app.use((req, res, next) => {
 
 
 /****************** All API Routes ************************/
-const ProductsRouts = require('./api/routes/Products');
-const orderRouts = require('./api/routes/orders');
+const ProductsRouts = require('./api/routes/Products/Products');
+const orderRouts = require('./api/routes/Order/orders');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
