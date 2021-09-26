@@ -6,14 +6,22 @@ const mongoose = require('mongoose');
 require("dotenv").config();
 
 
-// morgan use for auto consol.log()
+/**************** morgan use for auto consol.log() ****************************/
 app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
 
-// this is cors origin control of our api
+
+/************************ Mongoose uri credential *************************/
+const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.7tcxm.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+// const DATABASE_URL = process.env.Db_URL;
+console.log('DATABASE_URL connected', DATABASE_URL)
+
+
+
+/******************* this is cors origin control of our api *******************/
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start
   res.header(
@@ -30,7 +38,7 @@ app.use((req, res, next) => {
 
 
 
-// All API Routes
+/****************** All API Routes ************************/
 const ProductsRouts = require('./api/routes/Products');
 const orderRouts = require('./api/routes/orders');
 
@@ -39,7 +47,7 @@ app.use('/orders', orderRouts);
 
 
 
-// Error handling
+/******************** Error handling ******************/
 app.use((req, res, next) => {
  
   const error = new Error('Not found');
@@ -58,11 +66,9 @@ app.use((error, req, res,  next) => {
 });
 
 
-/************************ Mongoose uri credential *************************/
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.7tcxm.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
-console.log("uri", uri)
 
-mongoose.connect(uri)
+/*********************** Mongoose Connect with database ***************************/
+mongoose.connect(DATABASE_URL)
 .then(() => {
     console.log('database connected');
 })
