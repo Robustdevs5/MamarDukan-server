@@ -3,12 +3,14 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Product = require('../../../models/product');
+const Order = require('../../../models/orders');
 
 
 // Get all products from database
 router.get('/', (req, res, next) => {
    Product.find()
         // .select("name price _id color description category brand img discount review")
+        .populate("order")
         .exec()
         .then(docs => {
             const response = {
@@ -56,20 +58,29 @@ router.get('/', (req, res, next) => {
 
 // Add product on database 
 router.post('/', (req, res, next) => {
-    const product = new Product({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        price:req.body.price,
-        description:req.body.description,
-        category:req.body.category,
-        color:req.body.color,
-        brand:req.body.brand,
-        review:'No review',
-        img:req.body.img,
-        date: req.body.date,
-        department: req.body.department
-    })
-    product.save()
+    Order.findById(req.body.orderId)
+        .then(order => {
+            if (!order) {
+                res.status(404).json({
+                    message: "order not found"
+                })
+            }
+            const product = new Product({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                price:req.body.price,
+                description:req.body.description,
+                category:req.body.category,
+                color:req.body.color,
+                brand:req.body.brand,
+                img:req.body.img,
+                date: req.body.date,
+                department: req.body.department,
+                size: req.body.size,
+                order: req.body.orderId
+            })
+            return product.save()
+        })
         .then(result => {
             console.log('result', result)
             res.status(200).json({
@@ -83,9 +94,9 @@ router.post('/', (req, res, next) => {
                     brand: result.brand,
                     _id: result.id,
                     img: result.img,
-                    review: 'No review',
                     date: result.date,
                     department: result.department,
+                    size: result.size,
                     multiVendorSeller: {
                         sellerName: 'Mamar Dukan',
                         url: 'https://mamar-dukan.web.app/seller/' + result._id
@@ -93,6 +104,11 @@ router.post('/', (req, res, next) => {
                     discount: {
                         discountPrice: result.price * 10
                     },
+                    order: {
+                        orderId: result._id,
+                        quantity: result.quantity,
+                        review: result.review
+                    }
                 }
             });
         })
@@ -113,7 +129,8 @@ router.post('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-    .select('name price _id color description category brand img review')
+        // .select('name price _id color description category brand img review')
+        .populate("order")
         .exec()
         .then(doc => {
             console.log('doc console', doc);

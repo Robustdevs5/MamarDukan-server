@@ -47,7 +47,8 @@ router.post('/',(req, res, next) => {
                 _id: mongoose.Types.ObjectId(),
                 quantity: req.body.quantity,
                 product: req.body.productId,
-                status: "PENDING"
+                status: "PENDING",
+                review:'No review',
             })
             return order.save()     
         })
@@ -58,7 +59,8 @@ router.post('/',(req, res, next) => {
                     _id: result._id,
                     product: result.product,
                     quantity: result.quantity,
-                    status: "PENDING"
+                    status: "PENDING",
+                    review: 'No review',
                 },
                 multiVendorSeller: {
                     type: "GET",
