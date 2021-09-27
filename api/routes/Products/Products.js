@@ -8,10 +8,9 @@ const Product = require('../../../models/product');
 // Get all products from database
 router.get('/', (req, res, next) => {
    Product.find()
-        .select("name price _id color description category brand img")
+        // .select("name price _id color description category brand img discount review")
         .exec()
         .then(docs => {
-            
             const response = {
                 count: docs.length,
                 products: docs.map(doc => {
@@ -23,10 +22,10 @@ router.get('/', (req, res, next) => {
                         category: doc.category,
                         color: doc.color,
                         brand: doc.brand,
-                        img: doc.status,
+                        img: doc.img,
                         multiVendorSeller: {
-                            type: 'GET',
-                            url: 'http://localhost:5000/products/' + doc._id
+                            sellerName: "Mamar dukan",
+                            url: 'https://mamar-dukan.web.app/seller/' + doc._id
                         },
                         discount: {
                             discountPrice: doc.price - .10
@@ -65,11 +64,14 @@ router.post('/', (req, res, next) => {
         category:req.body.category,
         color:req.body.color,
         brand:req.body.brand,
-        img:req.body.img
+        review:'No review',
+        img:req.body.img,
+        date: req.body.date,
+        department: req.body.department
     })
     product.save()
         .then(result => {
-            console.log(result)
+            console.log('result', result)
             res.status(200).json({
                 message: "successfully added a product",
                 createdProduct: {
@@ -80,14 +82,17 @@ router.post('/', (req, res, next) => {
                     color: result.color,
                     brand: result.brand,
                     _id: result.id,
-                    img:req.body.img,
+                    img: result.img,
+                    review: 'No review',
+                    date: result.date,
+                    department: result.department,
                     multiVendorSeller: {
-                        type: 'GET',
-                        url: 'http://localhost:5000/products/' + result._id
+                        sellerName: 'Mamar Dukan',
+                        url: 'https://mamar-dukan.web.app/seller/' + result._id
                     },
                     discount: {
                         discountPrice: result.price * 10
-                    }
+                    },
                 }
             });
         })
@@ -108,7 +113,7 @@ router.post('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-    .select('name price _id color description category brand')
+    .select('name price _id color description category brand img review')
         .exec()
         .then(doc => {
             console.log('doc console', doc);
@@ -117,7 +122,7 @@ router.get('/:productId', (req, res, next) => {
                     product: doc,
                     multiVendorSeller:{
                         type: "GET",
-                        url: "http://localhost:3000/products"
+                        url: "https://mamar-dukan.web.app/seller/"
                     }
                 });
             } else {
@@ -151,7 +156,7 @@ router.patch('/:productId', (req, res, next) => {
                 message: 'successfully a product updated',
                 multiVendorSeller: {
                     type: "GET",
-                    url: "http://localhost:3000/products/" + id
+                    url: "https://mamar-dukan.web.app/seller//" + id
                 }
             });
         })
@@ -177,7 +182,7 @@ router.delete('/:productId', (req, res, next) => {
                 message: 'successfully deleted a product',
                 multiVendorSeller: {
                     type: "POST",
-                    url: '"http://localhost:3000/products/',
+                    url: '"https://mamar-dukan.web.app/seller//',
                     body:{ name: 'String', price: 'Number'},
                 }
             });

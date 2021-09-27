@@ -8,7 +8,10 @@ const productSchema = mongoose.Schema({
     category: {type: String, required: true},
     color: {type: String, required: true},
     brand: {type: String, required: true},
-    img: {type: String, required: true}
+    review: {type: String},
+    date: {type: Date, default: Date.now},
+    department: {type: String},
+    img: {type: String, required: true},
 });
 
 module.exports = mongoose.model('Product', productSchema)

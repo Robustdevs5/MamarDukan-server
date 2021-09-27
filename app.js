@@ -44,9 +44,11 @@ app.use((req, res, next) => {
 /****************** All API Routes ************************/
 const ProductsRouts = require('./api/routes/Products/Products');
 const orderRouts = require('./api/routes/Order/orders');
+const userRouts = require('./api/routes/Users/Users');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
+app.use('/user', userRouts);
 
 
 
