@@ -7,11 +7,11 @@ const Product = require('../../../models/product');
 
 // Get all products from database
 router.get('/', (req, res, next) => {
-   Product.find()
+    Product.find()
         .select("name price _id color description category brand img")
         .exec()
         .then(docs => {
-            
+
             const response = {
                 count: docs.length,
                 products: docs.map(doc => {
@@ -60,18 +60,19 @@ router.post('/', (req, res, next) => {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        price:req.body.price,
-        description:req.body.description,
-        category:req.body.category,
-        color:req.body.color,
-        brand:req.body.brand,
-        img:req.body.img
+        price: req.body.price,
+        description: req.body.description,
+        category: req.body.category,
+        color: req.body.color,
+        brand: req.body.brand,
+        img: req.body.img
     })
+    console.log('Body',product)
     product.save()
         .then(result => {
-            console.log(result)
-            res.status(200).json({
+            res.status(200).json({ 
                 message: "successfully added a product",
+                img2: result.img,
                 createdProduct: {
                     name: result.name,
                     price: result.price,
@@ -80,7 +81,7 @@ router.post('/', (req, res, next) => {
                     color: result.color,
                     brand: result.brand,
                     _id: result.id,
-                    img:req.body.img,
+                    img: result.img,
                     multiVendorSeller: {
                         type: 'GET',
                         url: 'http://localhost:5000/products/' + result._id
@@ -97,7 +98,7 @@ router.post('/', (req, res, next) => {
                 error: err
             });
         });
-    
+
 });
 
 
@@ -108,14 +109,14 @@ router.post('/', (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-    .select('name price _id color description category brand')
+        .select('name price _id color description category brand')
         .exec()
         .then(doc => {
             console.log('doc console', doc);
             if (doc) {
                 res.status(200).json({
                     product: doc,
-                    multiVendorSeller:{
+                    multiVendorSeller: {
                         type: "GET",
                         url: "http://localhost:3000/products"
                     }
@@ -125,11 +126,11 @@ router.get('/:productId', (req, res, next) => {
                     message: 'No valid entry found for provided ID!'
                 });
             };
-            
+
         })
         .catch(err => {
             console.log('error', err)
-            res.status(500).json({error: err});
+            res.status(500).json({ error: err });
         });
 });
 
@@ -144,7 +145,7 @@ router.patch('/:productId', (req, res, next) => {
     for (const ops of req.body) {
         updatedOps[ops.propName] = ops.value;
     }
-    Product.updateOne({_id: id}, {$set: updatedOps})
+    Product.updateOne({ _id: id }, { $set: updatedOps })
         .exec()
         .then(result => {
             res.status(200).json({
@@ -170,7 +171,7 @@ router.patch('/:productId', (req, res, next) => {
 router.delete('/:productId', (req, res, next) => {
     const id = req.params.productId;
     const name = req.params.productId;
-    Product.remove({_id: id})
+    Product.remove({ _id: id })
         .exec()
         .then(result => {
             res.status(200).json({
@@ -178,7 +179,7 @@ router.delete('/:productId', (req, res, next) => {
                 multiVendorSeller: {
                     type: "POST",
                     url: '"http://localhost:3000/products/',
-                    body:{ name: 'String', price: 'Number'},
+                    body: { name: 'String', price: 'Number' },
                 }
             });
         })
