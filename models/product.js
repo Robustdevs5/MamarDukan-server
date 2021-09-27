@@ -10,7 +10,7 @@ const productSchema = mongoose.Schema({
     brand: {type: String, required: true},
     review: {type: String},
     date: {type: Date, default: Date.now},
-    department: {type: String},
+    department: {type: String, require: true},
     img: {type: String, required: true},
 });
 
