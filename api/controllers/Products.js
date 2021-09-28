@@ -168,7 +168,7 @@ exports.updated_products = (req, res, next) => {
                 message: 'successfully a product updated',
                 multiVendorSeller: {
                     type: "GET",
-                    url: "https://mamar-dukan.web.app/seller//" + id
+                    url: "https://mamar-dukan.web.app/seller/" + id
                 }
             });
         })
@@ -192,7 +192,7 @@ exports.deleted_products =  (req, res, next) => {
                 message: 'successfully deleted a product',
                 multiVendorSeller: {
                     type: "POST",
-                    url: '"https://mamar-dukan.web.app/seller//',
+                    url: '"https://mamar-dukan.web.app/seller/',
                     body:{ name: 'String', price: 'Number'},
                 }
             });

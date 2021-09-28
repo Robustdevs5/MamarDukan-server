@@ -5,13 +5,13 @@ const checkAuth = require('../../middleware/check-auth');
 const usersControllers = require('../../controllers/User');
 
 
-// ************************* Handle signup user router **************************
+// ************************* Handle user router **************************
 router.post('/signup', usersControllers.signUp_user);
-
-
-// ************************* Handle Login user router **************************
 router.post('/login', usersControllers.login_user);
-router.delete('/:userId', checkAuth, usersControllers.login_user_deleted);
+router.get('/', usersControllers.all_user);
+router.get('/:userId', usersControllers.single_user);
+router.patch('/:userId', usersControllers.updated_user);
+router.delete('/:userId', usersControllers.login_user_deleted);
 
 
 
