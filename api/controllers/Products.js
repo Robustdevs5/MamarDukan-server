@@ -60,11 +60,11 @@ exports.get_all_products = (req, res, next) => {
 exports.add_product =  (req, res, next) => {
     Order.findById(req.body.orderId)
         .then(order => {
-            if (!order) {
-                res.status(404).json({
-                    message: "order not found"
-                })
-            }
+            // if (!order) {
+            //     res.status(404).json({
+            //         message: "order not found"
+            //     })
+            // }
             const product = new Product({
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,

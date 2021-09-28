@@ -12,7 +12,7 @@ const productSchema = mongoose.Schema({
     department: {type: String, require: true},
     img: {type: String, required: true},
     size: {type: String, required: true},
-    order: {type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true},
+    order: {type: mongoose.Schema.Types.ObjectId, ref: "Order"},
 });
 
 module.exports = mongoose.model('Product', productSchema)
