@@ -60,11 +60,11 @@ exports.get_all_products = (req, res, next) => {
 exports.add_product =  (req, res, next) => {
     Order.findById(req.body.orderId)
         .then(order => {
-            if (!order) {
-                res.status(404).json({
-                    message: "order not found"
-                })
-            }
+            // if (!order) {
+            //     res.status(404).json({
+            //         message: "order not found"
+            //     })
+            // }
             const product = new Product({
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,
@@ -168,7 +168,7 @@ exports.updated_products = (req, res, next) => {
                 message: 'successfully a product updated',
                 multiVendorSeller: {
                     type: "GET",
-                    url: "https://mamar-dukan.web.app/seller//" + id
+                    url: "https://mamar-dukan.web.app/seller/" + id
                 }
             });
         })
@@ -192,7 +192,7 @@ exports.deleted_products =  (req, res, next) => {
                 message: 'successfully deleted a product',
                 multiVendorSeller: {
                     type: "POST",
-                    url: '"https://mamar-dukan.web.app/seller//',
+                    url: '"https://mamar-dukan.web.app/seller/',
                     body:{ name: 'String', price: 'Number'},
                 }
             });
