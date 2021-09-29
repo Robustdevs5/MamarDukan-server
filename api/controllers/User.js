@@ -15,7 +15,7 @@ exports.signUp_user =  (req, res, next) => {
         .then(user => {
             console.log(user);
             if (user.length >= 1) {
-                return res.status(409).json({
+                return res.status(11000).json({
                     message: "already have an account",
                 });
                 
@@ -27,14 +27,16 @@ exports.signUp_user =  (req, res, next) => {
                     if(err) {
                         return res.status(500).json({
                             error: err,
-                            message: "error from bcrypt"
+                            message: "error khelam from bcrypt"
                         });
                     } else {
+                        // const ShopUrl = req.body.ShopUrl.split(/\s/).join('');
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             name: req.body.name,
                             ShopName: req.body.ShopName,
+                            ShopUrl: req.body.ShopUrl,
                             role: req.body.role,
                             status: req.body.status,
                             PhoneNumber: req.body.PhoneNumber,
@@ -47,12 +49,21 @@ exports.signUp_user =  (req, res, next) => {
                                 console.log("user result", result)
                                 res.status(201).json({
                                     message: " User Created",
-                                    result
+                                    user: {
+                                        email: result.email,
+                                        name: result.name,
+                                        role: result.role,
+                                        status: result.status,
+                                        vendor: {
+                                            ShopName: result.ShopName,
+                                            ShopUrl: "https://mamar-dukan.web.app/seller/" + result.ShopUrl,
+                                            PhoneNumber: result.PhoneNumber
+                                        }
+                                    }
                                 });
                             })
                             .catch(err => {
                                 res.status(500).json({
-                                    // message: "You got an error"
                                     error: err
                                 });
                             });
@@ -62,10 +73,6 @@ exports.signUp_user =  (req, res, next) => {
             }
         })
 };
-
-
-
-
 
 //************************* Login User  ***************************************
 
