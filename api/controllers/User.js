@@ -30,13 +30,12 @@ exports.signUp_user =  (req, res, next) => {
                             message: "error khelam from bcrypt"
                         });
                     } else {
-                        const ShopUrl = req.body.ShopUrl.split(/\s/).join('');
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             name: req.body.name,
                             ShopName: req.body.ShopName,
-                            ShopUrl: ShopUrl,
+                            ShopUrl: req.body.ShopUrl,
                             role: req.body.role,
                             status: req.body.status,
                             PhoneNumber: req.body.PhoneNumber,
