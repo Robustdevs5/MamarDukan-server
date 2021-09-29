@@ -16,23 +16,31 @@ exports.get_all_products = (req, res, next) => {
          .then(docs => {
              const response = {
                  count: docs.length,
-                 products: docs.map(doc => {
+                 products: docs.map(result => {
                      return {
-                         _id: doc._id,
-                         name: doc.name,
-                         price: doc.price,
-                         description: doc.description,
-                         category: doc.category,
-                         color: doc.color,
-                         brand: doc.brand,
-                         img: doc.img,
-                         multiVendorSeller: {
-                             sellerName: "Mamar dukan",
-                             url: 'https://mamar-dukan.web.app/seller/' + doc._id
-                         },
-                         discount: {
-                             discountPrice: doc.price - .10
-                         }
+                        name: result.name,
+                        price: result.price,
+                        description: result.description,
+                        category: result.category,
+                        color: result.color,
+                        brand: result.brand,
+                        _id: result.id,
+                        img: result.img,
+                        date: result.date,
+                        department: result.department,
+                        size: result.size,
+                        multiVendorSeller: {
+                            sellerName: 'Mamar Dukan',
+                            url: 'https://mamar-dukan.web.app/seller/' + result._id
+                        },
+                        discount: {
+                            discountPrice: result.price * 10
+                        },
+                        order: {
+                            orderId: result._id,
+                            quantity: result.quantity,
+                            review: result.review
+                        }
                      };
                  })
              };
