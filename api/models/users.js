@@ -13,8 +13,8 @@ const userSchema = mongoose.Schema({
     ShopName: {type:String},
     ShopUrl: {type: String, unique: true},
     PhoneNumber: {type: Number},
-    role: {type: String, required: true, default: "user"},
-    status: {type: String, required: true, default: "pending"}
+    role: {type: String, default: "user"},
+    status: {type: String, default: "pending"}
 
 });
 
