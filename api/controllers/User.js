@@ -15,7 +15,7 @@ exports.signUp_user =  (req, res, next) => {
         .then(user => {
             console.log(user);
             if (user.length >= 1) {
-                return res.status(11000).json({
+                return res.status(409).json({
                     message: "already have an account",
                 });
                 
