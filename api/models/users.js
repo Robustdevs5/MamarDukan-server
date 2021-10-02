@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+    // _id: mongoose.Schema.Types.ObjectId,
     name: {type: String, require: true},
     email: {
         type: String, 
@@ -16,6 +16,8 @@ const userSchema = mongoose.Schema({
     role: {type: String, required: true, default: "user"},
     status: {type: String, required: true, default: "pending"}
 
-});
+},
+{ timestamps: true }
+);
 
 module.exports  = mongoose.model('User', userSchema)

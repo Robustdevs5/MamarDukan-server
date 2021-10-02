@@ -7,6 +7,7 @@ const usersControllers = require('../../controllers/User');
 
 // ************************* Handle user router **************************
 router.post('/signup', usersControllers.signUp_user);
+router.post('/anotheruser', usersControllers.anotherSignupUser);
 router.post('/login', usersControllers.login_user);
 router.get('/', usersControllers.all_user);
 router.get('/:userId', usersControllers.single_user);

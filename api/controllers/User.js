@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 const User = require('../models/users');
-
+const AnotherUser = require('../models/anotherUser');
 
 //************************* Signup User  ***************************************
 exports.signUp_user =  (req, res, next) => {
@@ -74,6 +74,47 @@ exports.signUp_user =  (req, res, next) => {
         })
 };
 
+//************************* Another signup User  ***************************************
+ exports.anotherSignupUser = (req, res , next ) => {
+    AnotherUser.find({ email: req.body.email})
+        .exec()
+        .then( user => {
+            console.log('another user', user);
+            if (user.length < 1) {
+                return res.status(404).json({
+                    message: "already account ace bhaisab"
+                });
+            } else {
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                    if (err) {
+                        return res.status(404).json({
+                            error: err,
+                            message: "error from hash password"
+                        });
+                    } else {
+                        const allUser = new User({
+                            user: req.body
+                        });
+                        console.log("another input user", user);
+                        allUser.save()
+                            .then( result => {
+                                console.log("another user result", result);
+                                res.status(200).json({
+                                    message: "another user created",
+                                    user: result
+                                })
+                            })
+                            .catch(err => {
+                               res.status(404).json({
+                                   error: err,
+                                   message: "error from another user save"
+                               })
+                            })
+                    }
+                })
+            }
+        })
+ }
 //************************* Login User  ***************************************
 
 exports.login_user = (req, res, next) => {
@@ -107,7 +148,8 @@ exports.login_user = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Auth successful",
-                        token: token
+                        token: token,
+                        email: user[0].email,
                     });
                 }
                 res.status(401).json({
