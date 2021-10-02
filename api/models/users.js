@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
     },
     password: {type:String},
     ShopName: {type:String},
-    ShopUrl: {type: String},
+    ShopUrl: {type: String, default: " "},
     PhoneNumber: {type: Number},
     role: {type: String, required: true, default: "user"},
     status: {type: String, required: true, default: "pending"}
