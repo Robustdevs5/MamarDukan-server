@@ -168,6 +168,9 @@ exports.get_single_products =  async (req, res, next) => {
             };
 };
 
+
+
+
 //************************* Updated the products from database ***************************************
 
 // exports.updated_products = async (req, res, next) => {
