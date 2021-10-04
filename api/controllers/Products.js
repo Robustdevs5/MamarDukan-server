@@ -65,7 +65,58 @@ exports.get_all_products = async (req, res, next) => {
             };
  };
 
- 
+//*********************** category query ******************************* */  
+
+
+exports.get_products_by_category = async (req, res, next) => {
+    try {
+        Product.find({ category: req.query.category })
+        // .limit(2)
+        .exec((err, data) => {
+            if (err) {
+            res.status(500).json({
+                error: "There was a server side error!",
+            });
+            } else {
+            res.status(200).json({
+                result: data,
+                message: "Success",
+            });
+            }
+        });
+    } catch {
+        res.status(404).json({
+            message: "Products not found"
+        });
+    }
+}
+//*********************** category query ******************************* */  
+
+
+exports.get_products_by_brands = async (req, res, next) => {
+    try {
+        Product.find({ brand: req.query.brand })
+        // .limit(2)
+        .exec((err, data) => {
+            if (err) {
+            res.status(500).json({
+                error: "There was a server side error!",
+            });
+            } else {
+            res.status(200).json({
+                result: data,
+                message: "Success",
+            });
+            }
+        });
+    } catch {
+        res.status(404).json({
+            message: "Products not found"
+        });
+    }
+}
+
+
 //************************* Add product on database  ***************************************
 
 exports.add_product = async (req, res, next) => {
