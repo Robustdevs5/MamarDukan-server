@@ -90,12 +90,37 @@ exports.get_products_by_category = async (req, res, next) => {
         });
     }
 }
-//*********************** category query ******************************* */  
 
 
+//*********************** Brand query ******************************* */  
 exports.get_products_by_brands = async (req, res, next) => {
     try {
         Product.find({ brand: req.query.brand })
+        // .limit(2)
+        .exec((err, data) => {
+            if (err) {
+            res.status(500).json({
+                error: "There was a server side error!",
+            });
+            } else {
+            res.status(200).json({
+                result: data,
+                message: "Success",
+            });
+            }
+        });
+    } catch {
+        res.status(404).json({
+            message: "Products not found"
+        });
+    }
+}
+
+
+//*********************** department query ******************************* */
+exports.get_products_by_department = async (req, res, next) => {
+    try {
+        Product.find({ department: req.query.department })
         // .limit(2)
         .exec((err, data) => {
             if (err) {

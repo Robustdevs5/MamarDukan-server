@@ -68,7 +68,7 @@ const { SECRET } = require("../config/config");
 //*******  check the role  ******
   if (user.role !== role) {
     return res.status(403).json({
-      message: "Please make sure you are logging in from the right portal.",
+      message: "Role not found !",
       success: false
     });
   }
