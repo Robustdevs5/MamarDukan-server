@@ -60,6 +60,7 @@ router.get("/profile", usersControllers.userAuth, async (req, res) => {
   return res.json(usersControllers.serializeUser(req.user));
 });
 
+
 // Users Protected Route
 router.get(
   "/user-protectd",
