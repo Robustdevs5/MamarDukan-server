@@ -15,7 +15,10 @@ app.use(bodyParser.json());
 
 
 /************************ Mongoose uri credential *************************/
-const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.7tcxm.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+
+
+const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.swdno.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+
 // const DATABASE_URL = process.env.Db_URL;
 console.log('DATABASE_URL connected', DATABASE_URL)
 
@@ -23,7 +26,7 @@ console.log('DATABASE_URL connected', DATABASE_URL)
 
 /******************* this is cors origin control of our api *******************/
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start
+  res.header("Access-Control-Allow-Origin", "*"); // Here star (*) means we allow all website to access our api, if we want ,does not allow anyone access our api just put website url replace the * start 
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
@@ -39,8 +42,8 @@ app.use((req, res, next) => {
 
 
 /****************** All API Routes ************************/
-const ProductsRouts = require('./api/routes/Products');
-const orderRouts = require('./api/routes/orders');
+const ProductsRouts = require('./api/routes/Products/Products');
+const orderRouts = require('./api/routes/Order/orders');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
@@ -75,7 +78,6 @@ mongoose.connect(DATABASE_URL)
 .catch(err => {
     console.log(err)
 })
-
-
+mongoose.Promise = global.Promise;
 
 module.exports = app;
