@@ -20,6 +20,7 @@ exports.orders_get_all =  (req, res, next) => {
                         _id: doc._id,
                         product: doc.product,
                         quantity: doc.quantity,
+                        date: doc.date,
                         multiVendorSeller: {
                             type: "GET",
                             url: "http://localhost:3000/" + doc._id
@@ -50,7 +51,7 @@ exports.create_Order = (req, res, next) => {
                 quantity: req.body.quantity,
                 product: req.body.productId,
                 status: "PENDING",
-                review:'No review',
+                date: req.body.date,
             })
             return order.save()     
         })
@@ -62,7 +63,7 @@ exports.create_Order = (req, res, next) => {
                     product: result.product,
                     quantity: result.quantity,
                     status: "PENDING",
-                    review: 'No review',
+                    date: result.date,
                 },
                 multiVendorSeller: {
                     type: "GET",

@@ -94,6 +94,7 @@ const { SECRET } = require("../config/config");
       username: user.username,
       role: user.role,
       email: user.email,
+      img: user.img,
       token: `Bearer ${token}`,
       expiresIn: 168
     };
@@ -141,6 +142,7 @@ exports.serializeUser = user => {
     email: user.email,
     role: user.role,
     name: user.name,
+    img: user.img,
     _id: user._id,
     updatedAt: user.updatedAt,
     createdAt: user.createdAt
@@ -165,6 +167,7 @@ exports.single_user = (req, res, next) => {
                   name: doc.name,
                   username: doc.username,
                   role: doc.role,
+                  img: doc.img,
                   status: doc.status,
                   vendor: {
                       ShopName: doc.shopname,
@@ -203,6 +206,7 @@ exports.all_user = (req, res, next) => {
                       _id: doc._id,
                       email: doc.email,
                       name: doc.name,
+                      img: doc.img,
                       role: doc.role,
                       vendor: {
                           ShopName: doc.shopname,
