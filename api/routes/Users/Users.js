@@ -116,5 +116,5 @@ router.patch('/:userId',
 //     return res.json("Super admin and Admin");
 //   }
 // );
-
+ 
 module.exports = router;
