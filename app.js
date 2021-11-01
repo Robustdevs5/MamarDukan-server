@@ -2,8 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
-require("dotenv").config();
+const passport = require("passport");
 
 
 /**************** morgan use for auto consol.log() ****************************/
@@ -11,17 +10,7 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
-
-
-
-/************************ Mongoose uri credential *************************/
-
-
-const DATABASE_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.swdno.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
-
-// const DATABASE_URL = process.env.Db_URL;
-console.log('DATABASE_URL connected', DATABASE_URL)
-
+require("./api/middleware/passport")(passport);
 
 
 /******************* this is cors origin control of our api *******************/
@@ -40,13 +29,14 @@ app.use((req, res, next) => {
 });
 
 
-
 /****************** All API Routes ************************/
 const ProductsRouts = require('./api/routes/Products/Products');
 const orderRouts = require('./api/routes/Order/orders');
+const userRouts = require('./api/routes/Users/Users');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
+app.use('/user', userRouts);
 
 
 
@@ -68,16 +58,5 @@ app.use((error, req, res,  next) => {
   });
 });
 
-
-
-/*********************** Mongoose Connect with database ***************************/
-mongoose.connect(DATABASE_URL)
-.then(() => {
-    console.log('database connected');
-})
-.catch(err => {
-    console.log(err)
-})
-mongoose.Promise = global.Promise;
 
 module.exports = app;

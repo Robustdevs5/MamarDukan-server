@@ -8,7 +8,11 @@ const productSchema = mongoose.Schema({
     category: {type: String, required: true},
     color: {type: String, required: true},
     brand: {type: String, required: true},
-    img: {type: String, required: true}
+    date: {type: Date, default: Date.now},
+    department: {type: String, require: true},
+    img: {type: String, required: true},
+    size: {type: String, required: true},
+    order: {type: mongoose.Schema.Types.ObjectId, ref: "Order"},
 });
 
 module.exports = mongoose.model('Product', productSchema)
