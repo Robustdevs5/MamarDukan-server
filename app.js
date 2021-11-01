@@ -10,7 +10,7 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
-require("./api/middleware/passport")(passport);
+// require("./api/middleware/passport")(passport);
 
 
 /******************* this is cors origin control of our api *******************/
