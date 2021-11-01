@@ -3,14 +3,14 @@ const router = express.Router();
 const usersControllers = require("../../controllers/User");
 
 
-// Users Registeration Route
+// Users Registration Route
 router.post("/register-user", 
   async (req, res) => {
     await usersControllers.userRegister(req.body, "user", res)
   }
 );
 
-// Users Registeration Route
+// Vendor Registration Route
 router.post("/register-vendor", 
   async (req, res) => {
     await usersControllers.userRegister(req.body, "vendor", res)
@@ -56,15 +56,23 @@ router.post("/login-super-admin", async (req, res) => {
 });
 
 //  Profile Route
-router.get("/profile", async (req, res) => {
-  return res.json(usersControllers.serializeUser(req.body));
+// router.get("/profile",  async (req, res) => {
+//   // return res.json(req.user);
+//   return console.log('profile req', req.user)
+//   // return console.log('profile req user', req.user)
+// });
+
+router.get("/profile", usersControllers.userAuth, async (req, res) => {
+  return console.log('profile req', usersControllers.serializeUser(req.user));
+  // return res.json(usersControllers.serializeUser(req.user));
 });
 
 // Users Protected Route
-// router.get(
-//   "/user-protectd",
-//   usersControllers.checkRole(["superadmin", "admin"]), 
-//   usersControllers.all_user);
+router.get(
+  "/user-protectd",
+  usersControllers.userAuth,
+  usersControllers.checkRole(["superadmin", "admin"]), 
+  usersControllers.all_user);
 
 // // Admin Protected Route
 // router.get(
@@ -79,16 +87,20 @@ router.get("/profile", async (req, res) => {
 
 // super admin and admin can Get single user 
 router.get('/:userId',
+  usersControllers.userAuth,
   usersControllers.checkRole(["superadmin", "admin"]), usersControllers.single_user);
 
 
-// only super admin and admin can Get all users 
-router.get("/allusers", usersControllers.all_user);
+// // only super admin and admin can Get all users 
+// router.get("/allusers",
+//   usersControllers.userAuth,
+//   usersControllers.checkRole(["superadmin", "admin"]), usersControllers.all_user);
 
 
   
 // only Super Admin Can deleted a user
 router.delete('/:userId',
+  usersControllers.userAuth,
   usersControllers.checkRole(["superadmin"]), usersControllers.user_deleted
 );
 
@@ -96,6 +108,7 @@ router.delete('/:userId',
 
 // only Super Admin Can updated a user
 router.patch('/:userId',
+  usersControllers.userAuth,
   usersControllers.checkRole(["superadmin"]), 
   usersControllers.updated_user
 );
@@ -109,5 +122,5 @@ router.patch('/:userId',
 //     return res.json("Super admin and Admin");
 //   }
 // );
- 
+
 module.exports = router;

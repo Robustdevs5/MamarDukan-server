@@ -79,35 +79,9 @@ client.connect((err) => {
       .catch((err) => console.log(err));
   });
 
-  app.get("/getProduct", (req, res) => {
-    productCollection.find({}).toArray((err, documents) => {
-      res.send(documents);
-    });
-  });
+app.get('/', (req, res) => {
+  res.send('Welcome (^.^) ');
+})
 
-  app.get("/getProduct/:id", (req, res) => {
-    productCollection
-      .find({ _id: ObjectID(req.params.id) })
-      .toArray((err, result) => {
-        res.send(result[0]);
-      });
-  });
-
-  app.post("/isAdmin", (req, res) => {
-    const email = req.body.email;
-    console.log(email);
-    adminCollection.find({ email: email }).toArray((err, result) => {
-      console.log(result);
-      res.send(result.length > 0);
-    });
-  });
-  app.delete("/delete/:id", (req, res) => {
-    productCollection
-      .deleteOne({ _id: ObjectID(req.params.id) })
-      .then((result) => {
-        res.send(result.deletedCount > 0);
-      });
-  });
-});
-
-app.listen(port);
+const port = process.env.PORT || 5000
+app.listen(port, err => err ? console.log("Filed to Listen on Port" , port) : console.log("Listing for Port" , port));
