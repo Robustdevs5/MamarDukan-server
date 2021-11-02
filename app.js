@@ -10,7 +10,7 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
-require("./api/middleware/passport")(passport);
+// require("./api/middleware/passport")(passport);
 
 
 /******************* this is cors origin control of our api *******************/
@@ -33,10 +33,14 @@ app.use((req, res, next) => {
 const ProductsRouts = require('./api/routes/Products/Products');
 const orderRouts = require('./api/routes/Order/orders');
 const userRouts = require('./api/routes/Users/Users');
+const reviewRouts = require('./api/routes/review/Review');
+const blogRouts = require('./api/routes/Blog/Blogs');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
 app.use('/user', userRouts);
+app.use('/review', reviewRouts)
+app.use('/blogs', blogRouts)
 
 
 

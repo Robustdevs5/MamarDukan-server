@@ -20,6 +20,7 @@ exports.get_all_products = async (req, res, next) => {
                 const response = {
                     count: docs.length,
                     products: docs.map(result => {
+                        console.log('pd result',result.order)
                         return {
                             name: result.name,
                             price: result.price,
@@ -40,9 +41,9 @@ exports.get_all_products = async (req, res, next) => {
                                 discountPrice: result.price * 10
                             },
                             order: {
-                                orderId: result._id,
-                                quantity: result.quantity,
-                                review: result.review
+                                order: result.order,
+                                // quantity: result.quantity,
+                                // review: result.review
                             }
                         };
                     })
@@ -153,6 +154,7 @@ exports.add_product = async (req, res, next) => {
                 //         message: "order not found"
                 //     })
                 // }
+                
                 const product = new Product({
                     _id: new mongoose.Types.ObjectId(),
                     name: req.body.name,
@@ -193,9 +195,9 @@ exports.add_product = async (req, res, next) => {
                             discountPrice: result.price * 10
                         },
                         order: {
-                            orderId: result._id,
-                            quantity: result.quantity,
-                            review: result.review
+                            order: result.order,
+                            // quantity: result.quantity,
+                            // review: result.review
                         }
                     }
                 });

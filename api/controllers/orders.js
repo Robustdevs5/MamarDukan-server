@@ -8,22 +8,45 @@ const Product = require('../models/product');
 
 exports.orders_get_all =  (req, res, next) => {
     Order.find()
-        .select('product quantity _id status')
+        // .select('product quantity _id status')
         .populate('product', 'name price brand color')
         .exec()
         .then(docs => {
             res.status(200).json({
                 count: docs.length,
-                orders: docs.map(doc => {
-                    console.log("docs",doc)
+                orders: docs.map(result => {
+                    console.log("docs",result)
                     return {
-                        _id: doc._id,
-                        product: doc.product,
-                        quantity: doc.quantity,
-                        multiVendorSeller: {
-                            type: "GET",
-                            url: "http://localhost:3000/" + doc._id
-                        }
+                        _id: result._id,
+                        notes: result.notes,
+                        product:{ 
+                            product: result.product,
+                            review: result.review,
+                            reviewRating: result.reviewRating,
+                        },
+                        user:{ 
+                            name: result.name,
+                            email: result.email,
+                            phone: result.phone,
+                            address: result.address,
+                            city: result.city,
+                            postcode: result.postcode,
+                        },
+                        payment:{
+                            cardnumber: result.cardnumber,
+                            bankDrap: result.bankDrap,
+                            paymentMethod: result.paymentMethod,
+                        },
+                        order:{
+                            status: result.status,
+                            orderId: result.orderId,
+                            orderDate: result.orderDate,
+                            deliveryDate: result.deliveryDate,
+                            approveDate: result.approveDate,
+                            deliveryMethod: result.deliveryMethod,
+                            quantity: result.quantity,
+                            price: result.price,
+                        },
                     };
                 })
             });
@@ -36,7 +59,7 @@ exports.orders_get_all =  (req, res, next) => {
 
 
 //************************* Create Order ***************************************
-
+var orderId = Math.floor(Math.random()*1000000000);
 exports.create_Order = (req, res, next) => {
     Product.findById(req.body.productId)
         .then(product => {
@@ -50,23 +73,63 @@ exports.create_Order = (req, res, next) => {
                 quantity: req.body.quantity,
                 product: req.body.productId,
                 status: "PENDING",
-                review:'No review',
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+                bankDrap: req.body.bankDrap,
+                address: req.body.address,
+                city: req.body.city,
+                postcode: req.body.postcode,
+                notes: req.body.notes,
+                deliveryMethod: req.body.deliveryMethod,
+                price: req.body.price,
+                paymentMethod: req.body.paymentMethod,
+                cardnumber: req.body.cardnumber,
+                orderId: "#md-"+orderId,
+                deliveryDate: req.body.deliveryDate,
+                approveDate: req.body.approveDate,
+                review: req.body.review,
+                reviewRating: req.body.reviewRating,
+                // date: req.body.date,
             })
             return order.save()     
         })
         .then(result => {
             res.status(201).json({
-                message: 'successfully added your order',
+                message: 'Your Order Placed successfully',
                 createdOrder: {
                     _id: result._id,
-                    product: result.product,
-                    quantity: result.quantity,
-                    status: "PENDING",
-                    review: 'No review',
-                },
-                multiVendorSeller: {
-                    type: "GET",
-                    url: "http://localhost:3000/" + result._id
+                    notes: result.notes,
+                    user:{ 
+                        name: result.name,
+                        email: result.email,
+                        phone: result.phone,
+                        address: result.address,
+                        city: result.city,
+                        postcode: result.postcode,
+                        paymentMethod: result.paymentMethod,
+                    },
+                    payment:{
+                        cardnumber: result.cardnumber,
+                        bankDrap: result.bankDrap,
+                        paymentMethod: result.paymentMethod,
+                    },
+                    product:{
+                        quantity: result.quantity,
+                        price: result.price,
+                        product: result.productId,
+                        review: result.review,
+                        rereviewRatingview: result.reviewRating,
+                    },
+                    order:{
+                        status: result.status,
+                        orderId: result.orderId,
+                        orderDate: result.orderDate,
+                        deliveryDate: result.deliveryDate,
+                        approveDate: result.approveDate,
+                        deliveryMethod: result.deliveryMethod,
+                    },
+                    
                 }
             });
         })
