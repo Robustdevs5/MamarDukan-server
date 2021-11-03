@@ -35,12 +35,16 @@ const orderRouts = require('./api/routes/Order/orders');
 const userRouts = require('./api/routes/Users/Users');
 const reviewRouts = require('./api/routes/review/Review');
 const blogRouts = require('./api/routes/Blog/Blogs');
+const MessageRouts = require('./api/routes/Message/Message');
+const reportRouts = require('./api/routes/Report/report');
 
 app.use('/products', ProductsRouts);
 app.use('/orders', orderRouts);
 app.use('/user', userRouts);
 app.use('/review', reviewRouts)
 app.use('/blogs', blogRouts)
+app.use('/message', MessageRouts)
+app.use('/report', reportRouts)
 
 
 

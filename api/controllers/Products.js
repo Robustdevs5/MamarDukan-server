@@ -33,12 +33,16 @@ exports.get_all_products = async (req, res, next) => {
                             date: result.date,
                             department: result.department,
                             size: result.size,
+                            coupon: {
+                                couponPrice: result.price - result.couponPrice,
+                                couponCode: result.couponCode,
+                            },
                             multiVendorSeller: {
                                 sellerName: 'Mamar Dukan',
                                 url: 'https://mamar-dukan.web.app/seller/' + result._id
                             },
                             discount: {
-                                discountPrice: result.price * 10
+                                discountPrice: result.price * result.discountPrice
                             },
                             order: {
                                 order: result.order,
@@ -121,12 +125,34 @@ exports.get_products_by_brands = async (req, res, next) => {
 //*********************** department query ******************************* */
 exports.get_products_by_department = async (req, res, next) => {
     try {
-        Product.find({ department: req.query.department })
+        Product.find({ department: req.query.department, name: req.query.name })
         // .limit(2)
         .exec((err, data) => {
             if (err) {
             res.status(500).json({
                 error: "There was a server side error!",
+            });
+            } else {
+            res.status(200).json({
+                result: data,
+                message: "Success",
+            });
+            }
+        });
+    } catch {
+        res.status(404).json({
+            message: "Products not found"
+        });
+    }
+}
+exports.get_products_by_department = async (req, res, next) => {
+    try {
+        Product.find({ department: req.query.department})
+        // .limit(2)
+        .exec((err, data) => {
+            if (err) {
+            res.status(500).json({
+                error: err,
             });
             } else {
             res.status(200).json({
@@ -167,7 +193,10 @@ exports.add_product = async (req, res, next) => {
                     date: req.body.date,
                     department: req.body.department,
                     size: req.body.size,
-                    order: req.body.orderId
+                    order: req.body.orderId,
+                    discountPrice: req.body.discountPrice,
+                    couponPrice: req.body.couponPrice,
+                    couponCode: req.body.couponCode,
                 })
                 return product.save()
             })
@@ -186,13 +215,17 @@ exports.add_product = async (req, res, next) => {
                         img: result.img,
                         date: result.date,
                         department: result.department,
-                        size: result.size,
+                        size: result.size, 
+                        coupon: {
+                            couponPrice: result.price - result.couponPrice,
+                            couponCode: result.couponCode,
+                        },
                         multiVendorSeller: {
                             sellerName: 'Mamar Dukan',
                             url: 'https://mamar-dukan.web.app/seller/' + result._id
                         },
                         discount: {
-                            discountPrice: result.price * 10
+                            discountPrice: result.price -  result.discountPrice
                         },
                         order: {
                             order: result.order,
