@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/Robustdevs5/MamarDukan-server/issues"
   },
+  "engines": {
+    "node": "6.11.1"
+  },
   "homepage": "https://github.com/Robustdevs5/MamarDukan-server#readme"
 }
