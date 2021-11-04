@@ -7,22 +7,14 @@ exports.get_All_Review = async (req, res, next) => {
     try {
         Review.find()
             // .select('star user review _id product')
-            .populate('product user', 'name price brand color email img')
+            .populate('product', 'name price brand color email img')
             .exec()
             .then(docs => {
                 const response = {
                     count: docs.length,
                     review: docs.map(result => {
                         console.log("result",result)
-                        return {
-                            _id: result.id,
-                            star: result.star,
-                            review: result.review,
-                            date: result.date,
-                            user: result.user,
-                            product: result.product
-                            
-                        };
+                        return { result};
                         
                     })
 
@@ -61,9 +53,10 @@ exports.create_review = async (req, res, next) => {
                    _id: mongoose.Types.ObjectId(),
                    review: req.body.review,
                    star: req.body.star,
-                   date: req.body.date,
                    product: req.body.productId,
-                   user: req.body.userId,
+                   name: req.body.name,
+                   reviewRating: req.body.reviewRating,
+
                 })
                 return review.save()
             })
@@ -72,15 +65,7 @@ exports.create_review = async (req, res, next) => {
                 console.log('result', result)
                 res.status(200).json({
                     message: "successfully done a review",
-                    review: {
-                        _id: result.id,
-                        review: result.review,
-                        star: result.star,
-                        date: result.date,
-                        product: result.product,
-                        user: result.user
-
-                    }
+                    review: result
                 })
             })
             
@@ -91,3 +76,33 @@ exports.create_review = async (req, res, next) => {
         });
     }
 }
+
+//*****************  Get single review from database ********************
+
+exports.get_single_review =  async (req, res, next) => {
+    try {
+        const id = req.params.reviewId;
+        Review.findById(id)
+            .exec()
+            .then(doc => {
+                console.log('doc console', doc);
+                if (doc) {
+                    res.status(200).json({
+                        count: doc.length,
+                        result: doc,
+                        message: "Success",
+                    });
+                } else {
+                    res.status(400).json({
+                        message: 'No valid entry found for provided ID!'
+                    });
+                };
+                
+            })
+
+        } catch {
+                res.status(404).json({
+                    message: "Review not found"
+                });
+            };
+};

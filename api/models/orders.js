@@ -21,8 +21,6 @@ const orderSchema = mongoose.Schema({
     orderDate: {type: Date, default: Date.now},
     deliveryDate: {type: Date, default: null},
     approveDate: {type: Date, default: null},
-    review: {type: String, default: null},
-    reviewRating: {type: Number, default: null},
 },
 { timestamps: true});
 

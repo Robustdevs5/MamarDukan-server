@@ -14,7 +14,7 @@ exports.get_all_products = async (req, res, next) => {
 
         Product.find()
             // .select("name price _id color description category brand img discount review")
-            .populate("order")
+            .populate("order review")
             .exec()
             .then(docs => {
                 const response = {
@@ -48,6 +48,9 @@ exports.get_all_products = async (req, res, next) => {
                                 order: result.order,
                                 // quantity: result.quantity,
                                 // review: result.review
+                            },
+                            review:{
+                                review: result.review,
                             }
                         };
                     })
@@ -252,7 +255,7 @@ exports.get_single_products =  async (req, res, next) => {
         const id = req.params.productId;
         Product.findById(id)
             // .select('name price _id color description category brand img review')
-            .populate("order")
+            .populate("order review")
             .exec()
             .then(doc => {
                 console.log('doc console', doc);

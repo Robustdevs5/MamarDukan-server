@@ -16,6 +16,7 @@ const productSchema = mongoose.Schema({
     img: {type: String, required: true},
     size: {type: String, required: true},
     order: {type: mongoose.Schema.Types.ObjectId, ref: "Order"},
+    review: {type: mongoose.Schema.Types.ObjectId, ref: "Review"},
 });
 
 module.exports = mongoose.model('Product', productSchema)
